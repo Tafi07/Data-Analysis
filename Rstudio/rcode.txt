@@ -1,0 +1,29 @@
+#importing .csv file 
+arrest <- read.csv("projectdata.csv", header = TRUE, sep = ",")
+arrest
+#Replacing NA in column Assault with mean of the remaining values
+arrest$Assault[is.na(arrest$Assault)]<-mean(arrest$Assault,na.rm=TRUE)
+arrest
+#Data Formatting... To round up the murder and assualt variable
+arrest$Murder = as.numeric(format(round(arrest$Murder, 0)))
+arrest
+arrest$Assault = as.numeric(format(round(arrest$Assault, 0)))
+arrest
+
+#Merging Type variable in dataset 
+arrest_2 <- arrest
+arrest_2 <- transform(arrest_2, Type = Urban.Population...)
+arrest_2
+#Data intrigation  prepare the dataset to integrate a new column (named type) based on the urban population variable.
+library(tidyverse)
+library(haven)
+arrest_3 = arrest_2 %>% mutate(Type = case_when(Type< 50 ~ 'Small',
+                                              Type< 60 ~ 'Medium',
+                                              Type< 70 ~ 'Large',
+                                              TRUE ~ 'ExtraLarge') )
+arrest_3
+#Data reduction- (as nation 15 is too high and and nation 32 is too low to be a percentage)  
+arrest_3 <- arrest_3[-c(15, 32), ]
+arrest_3
+
+arrest_3
